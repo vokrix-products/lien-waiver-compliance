@@ -1,23 +1,20 @@
 # Lien Waiver Compliance
 
-A construction lien waiver compliance extraction tool for small general contractors. Upload lien waiver PDFs, extract key fields, validate completeness, and flag missing or conditional waivers before payment release.
+Construction lien waiver compliance extraction tool. Upload lien waiver PDFs; extract key fields, validate completeness, flag conditional or missing waivers before payment release.
 
 ## Architecture
 
-- **Extraction archetype**: buyer uploads files, poller processes, records table populated, dashboard shows results
-- **Subdomain**: liens
+- **Dashboard**: Vite + React (shadcn-admin template)
+- **Backend**: Python poller that processes Supabase Storage uploads via Anthropic Claude Haiku
+- **Database**: Supabase (jobs, records tables)
 
-## Repository Structure
+## Setup
 
-- `extractor.py` — Calls Anthropic Claude Haiku to extract structured data from lien waiver text
-- `validator.py` — Validates extracted fields and computes compliance status
-- `pdf_reader.py` — Extracts plain text from PDF using pypdf
-- `run_demo.py` — Offline demo with hardcoded test data
-- `backend/poller.py` — Long-running poller that processes pending jobs via Supabase REST API
-- `dashboard/` — Vite React dashboard for viewing waiver status
+1. Copy `.env.example` (not tracked) with `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `PRODUCT_ID`, `ANTHROPIC_API_KEY`
+2. `pip install -r backend/requirements.txt`
+3. `cd dashboard && npm install && npm run dev`
+4. `python3 backend/poller.py`
 
 ## Deployment
 
-- GitHub repo: `vokrix-products/lien-waiver-compliance`
-- Vercel project: `lien-waiver-compliance` (team `vokrix-s-projects`)
-- Environment variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+Dashboard deployed on Vercel (rootDirectory: dashboard). Poller runs as a background worker.

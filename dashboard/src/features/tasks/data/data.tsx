@@ -1,5 +1,4 @@
-import React from 'react';
-import { CheckCircle2, AlertTriangle, FileWarning, PenLine, ArrowDown, ArrowRight, ArrowUp, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, FileWarning, PenLine, ArrowDown, ArrowRight, ArrowUp, AlertCircle } from 'lucide-react'
 
 export const labels = [
   {
@@ -16,6 +15,11 @@ export const labels = [
   },
 ]
 
+// Severity tiers drive badge color. Every status maps to exactly one tier:
+//   critical -> red (destructive)   e.g. expired, denied, failed
+//   warning  -> amber (warning)     e.g. expiring soon, needs review
+//   good     -> green (success)     e.g. valid, approved, done
+//   neutral  -> gray (secondary)    e.g. pending, queued, n/a
 export type Severity = 'critical' | 'warning' | 'good' | 'neutral'
 
 export const severityToBadgeVariant: Record<
@@ -28,10 +32,15 @@ export const severityToBadgeVariant: Record<
   neutral: 'secondary',
 }
 
+// PRODUCT_CUSTOMIZE: replace this list with the real statuses this product
+// produces (must match exactly what the backend poller writes to
+// records.status). Every status must declare a severity tier above. Default
+// values below are generic placeholders only — do not ship as-is.
+// __STATUSES_BLOCK_START__
 export const statuses: {
   label: string
   value: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: typeof CheckCircle2
   severity: Severity
 }[] = [
   { label: 'Compliant', value: 'compliant', icon: CheckCircle2, severity: 'good' },
@@ -39,6 +48,7 @@ export const statuses: {
   { label: 'Incomplete', value: 'incomplete', icon: FileWarning, severity: 'warning' },
   { label: 'Missing Signature', value: 'missing_signature', icon: PenLine, severity: 'critical' },
 ]
+// __STATUSES_BLOCK_END__
 
 export const priorities = [
   {
